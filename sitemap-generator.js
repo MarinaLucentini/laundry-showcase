@@ -8,7 +8,7 @@ require('babel-register')({
   function generateSitemap() {
     return (
       new Sitemap(router)
-          .build('https://www.artedelpulito.it')
+          .build('https://artedelpulito.vercel.app/')
           .save('./public/sitemap.xml')
     );
   }
