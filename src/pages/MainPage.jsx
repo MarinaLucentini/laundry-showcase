@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "./MainPage.module.css";
 import laundryIllustration from "../assets/laundry_1.svg";
+import StructuredData from '../component/StructuredData';
 
 const ServiceTile = ({ title, description }) => (
   <div className={styles.serviceTile}>
@@ -37,6 +38,7 @@ const MainPage = () => {
 
   return (
     <div className={styles.mainPage}>
+      <StructuredData />
       <header className={styles.headerSection}>
         <div className={styles.bubbleBackground}>
           <div id="background-wrap">
