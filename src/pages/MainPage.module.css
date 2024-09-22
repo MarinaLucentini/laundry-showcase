@@ -118,7 +118,7 @@
 }
 
 .laundryIllustration {
-  width: 200px;
+  width: 150px;
   margin-bottom: 20px;
 }
 
@@ -127,13 +127,13 @@
 }
 
 .companyName {
-  font-size: 3em;
+  font-size: 2em;
   font-weight: bold;
   margin: 0;
 }
 
 .tagline {
-  font-size: 1.5em;
+  font-size: 1.2em;
   margin: 0;
 }
 
@@ -283,8 +283,7 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .headerContent {
     max-width: 60%;
     padding: 40px;
@@ -301,7 +300,8 @@
   .tagline {
     font-size: 2em;
   }
-
+}
+@media (max-width: 768px) {
   .servicesGrid {
     grid-template-columns: 1fr;
   }
