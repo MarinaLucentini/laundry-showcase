@@ -1,1 +1,12 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
+body {
+  background-color: #0a4d84;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #2b78b4;
+}
