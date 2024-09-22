@@ -1,130 +1,308 @@
 @font-face {
-    font-family: 'Hobo';
-    src: url('../assets/HoboStd.woff') format('woff');
+  font-family: "Hobo";
+  src: url("../assets/HoboStd.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Helvetica";
+  src: url("../assets/Helvetica.woff") format("woff");
+}
+
+.mainPage {
+  color: white;
+  background-color: #0a4d84;
+  font-family: "Helvetica", Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.headerSection {
+  padding: 2rem 0;
+}
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.laundryIllustration {
+  max-width: 24rem;
+  height: auto;
+}
+
+.titleContainer {
+  text-align: center;
+  margin-left: 2rem;
+}
+
+.companyName {
+  font-family: "Hobo", cursive;
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.tagline {
+  font-size: 1.5rem;
+}
+
+.mainContent {
+  flex-grow: 1;
+  padding: 2rem 1rem;
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.serviceTile {
+  background-color: #2b78b4;
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.serviceTile:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.serviceTile h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.footer {
+  padding: 1rem 0;
+}
+
+.address {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.mapSection {
+  width: 100%;
+  height: 450px;
+}
+.headerSection {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0a4d84;
+}
+
+.headerContent {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: white;
+  max-width: 90%;
+  padding: 20px;
+}
+
+.laundryIllustration {
+  width: 200px;
+  margin-bottom: 20px;
+}
+
+.titleContainer {
+  margin-top: 10px;
+}
+
+.companyName {
+  font-size: 3em;
+  font-weight: bold;
+  margin: 0;
+}
+
+.tagline {
+  font-size: 1.5em;
+  margin: 0;
+}
+
+/* Bubble Background */
+.bubbleBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* Bubble Styles */
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2), inset 0px 10px 30px 5px rgba(255, 255, 255, 1);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.bubble:after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  box-shadow: inset 0 20px 30px rgba(255, 255, 255, 0.3);
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
+  height: 90%;
+  width: 90%;
+  top: 5%;
+  left: 5%;
+}
+
+/* Bubbles Sizes and Positions */
+.x1 {
+  width: 200px;
+  height: 200px;
+  animation: animateBubble 25s linear infinite, sideWays 2s ease-in-out infinite alternate;
+  left: -5%;
+  top: 5%;
+  transform: scale(0.6);
+}
+.x2 {
+  width: 150px;
+  height: 150px;
+  animation: animateBubble 20s linear infinite, sideWays 4s ease-in-out infinite alternate;
+  left: 5%;
+  top: 80%;
+  transform: scale(0.4);
+}
+.x3 {
+  width: 180px;
+  height: 180px;
+  animation: animateBubble 28s linear infinite, sideWays 2s ease-in-out infinite alternate;
+  left: 10%;
+  top: 40%;
+  transform: scale(0.7);
+}
+.x4 {
+  width: 100px;
+  height: 100px;
+  animation: animateBubble 22s linear infinite, sideWays 3s ease-in-out infinite alternate;
+  left: 20%;
+  top: 0;
+  transform: scale(0.3);
+}
+.x5 {
+  width: 160px;
+  height: 160px;
+  animation: animateBubble 29s linear infinite, sideWays 4s ease-in-out infinite alternate;
+  left: 30%;
+  top: 50%;
+  transform: scale(0.5);
+}
+.x6 {
+  width: 200px;
+  height: 200px;
+  animation: animateBubble 21s linear infinite, sideWays 2s ease-in-out infinite alternate;
+  left: 50%;
+  top: 0;
+  transform: scale(0.8);
+}
+.x7 {
+  width: 150px;
+  height: 150px;
+  animation: animateBubble 20s linear infinite, sideWays 2s ease-in-out infinite alternate;
+  left: 65%;
+  top: 70%;
+  transform: scale(0.4);
+}
+.x8 {
+  width: 100px;
+  height: 100px;
+  animation: animateBubble 22s linear infinite, sideWays 3s ease-in-out infinite alternate;
+  left: 80%;
+  top: 10%;
+  transform: scale(0.3);
+}
+.x9 {
+  width: 190px;
+  height: 190px;
+  animation: animateBubble 29s linear infinite, sideWays 4s ease-in-out infinite alternate;
+  left: 90%;
+  top: 50%;
+  transform: scale(0.6);
+}
+.x10 {
+  width: 130px;
+  height: 130px;
+  animation: animateBubble 26s linear infinite, sideWays 2s ease-in-out infinite alternate;
+  left: 80%;
+  top: 80%;
+  transform: scale(0.3);
+}
+
+/* Bubble Animations */
+@keyframes animateBubble {
+  0% {
+    margin-top: 1000px;
   }
-  
-  @font-face {
-    font-family: 'Helvetica';
-    src: url('../assets/Helvetica.woff') format('woff');
+  100% {
+    margin-top: -100%;
   }
-  
-  .mainPage {
-    color: white;
-    background-color: #0A4D84;
-    font-family: 'Helvetica', Arial, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+}
+
+@keyframes sideWays {
+  0% {
+    margin-left: 0px;
   }
-  
-  .headerSection {
-    padding: 2rem 0;
+  100% {
+    margin-left: 50px;
   }
-  
+}
+@media (max-width: 1024px) {
   .headerContent {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    text-align: center;
   }
-  
-  .laundryIllustration {
-    max-width: 24rem;
-    height: auto;
-  }
-  
+
   .titleContainer {
     text-align: center;
-    margin-left: 2rem;
+    margin-top: 2rem;
   }
-  
-  .companyName {
-    font-family: 'Hobo', cursive;
-    font-size: 3rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .tagline {
-    font-size: 1.5rem;
-  }
-  
-  .mainContent {
-    flex-grow: 1;
-    padding: 2rem 1rem;
-  }
-  
+
   .servicesGrid {
-    display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-    max-width: 900px;
-    margin: 0 auto;
   }
-  
-  .serviceTile {
-    background-color: #2B78B4;
-    border-radius: 10px;
-    padding: 1.5rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
+}
+
+@media (max-width: 768px) {
+  .headerContent {
+    max-width: 60%;
+    padding: 40px;
   }
-  
-  .serviceTile:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+
+  .laundryIllustration {
+    width: 300px;
   }
-  
-  .serviceTile h3 {
-    margin-bottom: 0.5rem;
-    font-size: 1.5rem;
+
+  .companyName {
+    font-size: 4em;
   }
-  
-  .footer {
-    padding: 1rem 0;
+
+  .tagline {
+    font-size: 2em;
   }
-  
-  .address {
-    text-align: center;
-    margin-bottom: 3rem;
+
+  .servicesGrid {
+    grid-template-columns: 1fr;
   }
-  
-  .mapSection {
-    width: 100%;
-    height: 450px;
-  }
-  
-  @media (max-width: 1024px) {
-    .headerContent {
-      flex-direction: column;
-      text-align: center;
-    }
-  
-    .titleContainer {
-      text-align: center;
-      margin-top: 2rem;
-    }
-  
-    .servicesGrid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .companyName {
-      font-size: 2.5rem;
-    }
-  
-    .tagline {
-      font-size: 1.2rem;
-    }
-  
-    .servicesGrid {
-      grid-template-columns: 1fr;
-    }
-  }
+}
