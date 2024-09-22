@@ -3,7 +3,7 @@ import { Container, Navbar } from "react-bootstrap";
 import logo from "../assets/laundry.svg";
 import { FaWhatsapp } from "react-icons/fa";
 import { CiFacebook } from "react-icons/ci";
-import style from "../component/MyNav.module.css";
+import style from "./MyNav.module.css";
 
 const MyNav = () => {
   const handleWhatsAppClick = () => {
