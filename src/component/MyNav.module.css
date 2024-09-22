@@ -1,5 +1,26 @@
+@font-face {
+  font-family: "Hobo";
+  src: url("../assets/HoboStd.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Helvetica";
+  src: url("../assets/Helvetica.woff") format("woff");
+}
+
 .iconColor {
-  color: #002244;
+  color: whitesmoke;
+}
+.navBar {
+  color: white;
+  background-color: #0a4d84;
+  font-family: "Helvetica", Arial, sans-serif;
+}
+.brandName {
+  font-family: "Hobo", cursive;
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  color: whitesmoke;
 }
 
 .clickable {
