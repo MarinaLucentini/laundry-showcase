@@ -4,7 +4,7 @@ import { HelmetProvider, Helmet } from 'react-helmet-async';
 import "./App.css";
 import MyNav from "./component/MyNav";
 import MainPage from './pages/MainPage';
-
+import AdminPanel from './Admin.jsx';
 function App() {
   return (
     <HelmetProvider>
@@ -22,6 +22,7 @@ function App() {
         <MyNav />
         <Routes>
           <Route path="/" element={<MainPage />} />
+          <Route path="/admin/*" element={<AdminPanel />} />
         </Routes>
       </BrowserRouter>
     </HelmetProvider>
