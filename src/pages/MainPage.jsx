@@ -81,7 +81,7 @@ const MainPage = () => {
           width="100%" 
           height="460" 
           style={{ border: 0 }}
-          allowfullscreen="" 
+          allowFullScreen="" 
           loading="lazy" 
           title="Company Location"
         ></iframe>
