@@ -4,6 +4,7 @@ package marinalucentini.laundryshowcase.controller;
 import marinalucentini.laundryshowcase.exceptions.BadRequestException;
 import marinalucentini.laundryshowcase.payload.LoginResponse;
 import marinalucentini.laundryshowcase.payload.UserDTO;
+import marinalucentini.laundryshowcase.repositories.UserRepository;
 import marinalucentini.laundryshowcase.services.AuthorizationService;
 import marinalucentini.laundryshowcase.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class AuthenticationController {
     UserService userService;
     @Autowired
     AuthorizationService authorizationService;
+    @Autowired
+    UserRepository userRepository;
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> studentResponseDto  (@RequestBody @Validated UserDTO userDTO, BindingResult bindingResult){
@@ -37,6 +40,9 @@ public class AuthenticationController {
                 errors.put(fieldName, errorMessage);
             }
             return ResponseEntity.badRequest().body(errors);
+        }
+        if (userRepository.count() > 0) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Collections.singletonMap("error", "Un amministratore è già registrato."));
         }
         try {
             String response = userService.saveUser(userDTO);

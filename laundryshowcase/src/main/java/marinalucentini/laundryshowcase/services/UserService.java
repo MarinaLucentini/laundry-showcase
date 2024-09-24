@@ -23,6 +23,10 @@ public class UserService {
 
 
     public String saveUser(UserDTO body) {
+        if (userRepository.count() > 0) {
+            throw new BadRequestException("L'amministratore è già registrato. Registrazioni aggiuntive non sono permesse.");
+        }
+
         userRepository.findByEmail(body.email()).ifPresent(
                 user -> {
                     throw new BadRequestException("L'email è già in uso");
