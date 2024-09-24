@@ -1,0 +1,37 @@
+package marinalucentini.laundryshowcase.services;
+
+import marinalucentini.laundryshowcase.entities.User;
+import marinalucentini.laundryshowcase.exceptions.BadRequestException;
+import marinalucentini.laundryshowcase.exceptions.NotFoundException;
+import marinalucentini.laundryshowcase.payload.UserDTO;
+import marinalucentini.laundryshowcase.repositories.UserRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.UUID;
+
+@Service
+public class UserService {
+    @Autowired
+    private UserRepository userRepository;
+    public String saveUser(UserDTO body) {
+        userRepository.findByEmail(body.email()).ifPresent(
+                user -> {
+                    throw new BadRequestException("L'email è già in uso");
+                }
+        );
+User user = new User();
+user.setEmail(body.email());
+user.setPassword(body.password());
+userRepository.save(user);
+return "L'utente è stato salvato con successo";
+    }
+    public User findById(UUID id) {
+        return this.userRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
+    }
+        public User findByEmail(String email) {
+            return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("The user with email: " + email + ", already exist."));
+        }
+
+}

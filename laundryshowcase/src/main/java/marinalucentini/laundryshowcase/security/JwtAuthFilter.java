@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import marinalucentini.laundryshowcase.entities.User;
 import marinalucentini.laundryshowcase.exceptions.UnauthorizedException;
+import marinalucentini.laundryshowcase.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,6 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -34,7 +36,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         jwtTools.verifyToken(accessToken);
         String userId = jwtTools.extractIdFromToken(accessToken);
-        User currentStudent = userService.findById(userId);
+        User currentStudent = userService.findById(UUID.fromString(userId));
         Authentication authentication = new UsernamePasswordAuthenticationToken(currentStudent, null, currentStudent.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
