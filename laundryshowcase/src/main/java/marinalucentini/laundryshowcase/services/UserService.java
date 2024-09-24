@@ -7,6 +7,7 @@ import marinalucentini.laundryshowcase.payload.UserDTO;
 import marinalucentini.laundryshowcase.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -15,6 +16,12 @@ import java.util.UUID;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder bcrypt;
+
+
+
+
     public String saveUser(UserDTO body) {
         userRepository.findByEmail(body.email()).ifPresent(
                 user -> {
@@ -23,7 +30,7 @@ public class UserService {
         );
 User user = new User();
 user.setEmail(body.email());
-user.setPassword(body.password());
+user.setPassword(bcrypt.encode(body.password()));
 userRepository.save(user);
 return "L'utente è stato salvato con successo";
     }
