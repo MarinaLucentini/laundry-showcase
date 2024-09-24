@@ -1,7 +1,7 @@
-import SitemapGenerator from 'sitemap-generator';
+import SitemapGenerator from "sitemap-generator";
 
-const generator = SitemapGenerator('https://artedelpulito.vercel.app', {
-  filepath: './public/sitemap.xml',
+const generator = SitemapGenerator("https://artedelpulito.vercel.app", {
+  filepath: "./public/sitemap.xml",
   maxEntriesPerFile: 50000,
   stripQuerystring: true,
 });
