@@ -26,7 +26,8 @@ private String email;
 private String password;
 @Enumerated(EnumType.STRING)
 private Role role;
-
+@OneToMany
+private List<LaundryServices> laundryServices;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

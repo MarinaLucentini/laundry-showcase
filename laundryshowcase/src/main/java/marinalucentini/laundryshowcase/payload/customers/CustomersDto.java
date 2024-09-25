@@ -1,4 +1,4 @@
-package marinalucentini.laundryshowcase.payload;
+package marinalucentini.laundryshowcase.payload.customers;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
