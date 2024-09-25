@@ -59,8 +59,8 @@ public class CustomersService {
     public CustomersResponseWithLaundryServicesDTO getSingleCustomer (UUID id){
         Customers customers = findById(id);
         List<LaundryServiceResponseListDTO> laundryServiceResponseListDTOList =
-        customers.getLaundryServices().stream().map(laundryServices -> new LaundryServiceResponseListDTO(laundryServices.getName(), laundryServices.isCompleted()) ).toList();
-        return new CustomersResponseWithLaundryServicesDTO(customers.getName(), customers.getEmail(), customers.getPhone(), laundryServiceResponseListDTOList);
+        customers.getLaundryServices().stream().map(laundryServices -> new LaundryServiceResponseListDTO( laundryServices.getName(), laundryServices.isCompleted(),  laundryServices.getId()) ).toList();
+        return new CustomersResponseWithLaundryServicesDTO(customers.getId(), customers.getName(), customers.getEmail(), customers.getPhone(), laundryServiceResponseListDTOList);
     }
     // getAllCustomers
     public Page<CustomersResponseWithLaundryServicesDTO> getAllCustomers (int pageNumber, int pageSize, String sortBy){
@@ -69,7 +69,7 @@ pageSize = 100;
 }
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
 Page<Customers> customersPage = customersRepository.findAll(pageable);
-return customersPage.map(customers -> new CustomersResponseWithLaundryServicesDTO(customers.getName(), customers.getEmail(), customers.getPhone(), customers.getLaundryServices().stream().map(laundryServices -> new LaundryServiceResponseListDTO(laundryServices.getName(), laundryServices.isCompleted())).toList()));
+return customersPage.map(customers -> new CustomersResponseWithLaundryServicesDTO( customers.getId(), customers.getName(), customers.getEmail(), customers.getPhone(), customers.getLaundryServices().stream().map(laundryServices -> new LaundryServiceResponseListDTO(laundryServices.getName(), laundryServices.isCompleted(), laundryServices.getId())).toList()));
     }
     public Customers findById(UUID id) {
         return this.customersRepository.findById(id).orElseThrow(() -> new NotFoundException(id));

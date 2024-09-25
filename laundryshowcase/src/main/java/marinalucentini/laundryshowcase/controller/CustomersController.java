@@ -29,7 +29,7 @@ public Page<CustomersResponseWithLaundryServicesDTO> getAllCustomers (@RequestPa
     return customersService.getAllCustomers(page, size, sortBy);
 }
     // 2) Get w id
-    @GetMapping("/{customeId}")
+    @GetMapping("/{customerId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public CustomersResponseWithLaundryServicesDTO getSingleCustomer (@PathVariable UUID customerId){

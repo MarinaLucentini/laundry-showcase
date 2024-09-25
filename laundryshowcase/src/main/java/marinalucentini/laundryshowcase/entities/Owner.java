@@ -18,7 +18,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @JsonIgnoreProperties({"password", "role", "authorities", "enabled", "accountNonExpired", "credentialsNonExpired", "accountNonLocked"})
-public class User implements UserDetails {
+public class Owner implements UserDetails {
 @Id
 @GeneratedValue
 private UUID id;
@@ -26,8 +26,7 @@ private String email;
 private String password;
 @Enumerated(EnumType.STRING)
 private Role role;
-@OneToMany
-private List<LaundryServices> laundryServices;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +25,6 @@ public class Customers {
 private String  email;
 private String phone;
 @OneToMany (mappedBy = "customers")
-    private List<LaundryServices> laundryServices;
+    private List<LaundryServices> laundryServices = new ArrayList<>();
 
 }

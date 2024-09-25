@@ -1,6 +1,6 @@
 package marinalucentini.laundryshowcase.services;
 
-import marinalucentini.laundryshowcase.entities.User;
+import marinalucentini.laundryshowcase.entities.Owner;
 import marinalucentini.laundryshowcase.exceptions.BadRequestException;
 import marinalucentini.laundryshowcase.exceptions.NotFoundException;
 import marinalucentini.laundryshowcase.payload.UserDTO;
@@ -32,16 +32,16 @@ public class UserService {
                     throw new BadRequestException("L'email è già in uso");
                 }
         );
-User user = new User();
+Owner user = new Owner();
 user.setEmail(body.email());
 user.setPassword(bcrypt.encode(body.password()));
 userRepository.save(user);
 return "L'utente è stato salvato con successo";
     }
-    public User findById(UUID id) {
+    public Owner findById(UUID id) {
         return this.userRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
-        public User findByEmail(String email) {
+        public Owner findByEmail(String email) {
             return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("The user with email: " + email + ", already exist."));
         }
 

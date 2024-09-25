@@ -4,7 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import marinalucentini.laundryshowcase.entities.User;
+import marinalucentini.laundryshowcase.entities.Owner;
 import marinalucentini.laundryshowcase.exceptions.UnauthorizedException;
 import marinalucentini.laundryshowcase.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         jwtTools.verifyToken(accessToken);
         String userId = jwtTools.extractIdFromToken(accessToken);
-        User currentStudent = userService.findById(UUID.fromString(userId));
+        Owner currentStudent = userService.findById(UUID.fromString(userId));
         Authentication authentication = new UsernamePasswordAuthenticationToken(currentStudent, null, currentStudent.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

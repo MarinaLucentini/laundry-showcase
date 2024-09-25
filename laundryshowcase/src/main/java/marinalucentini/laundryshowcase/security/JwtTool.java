@@ -2,7 +2,7 @@ package marinalucentini.laundryshowcase.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import marinalucentini.laundryshowcase.entities.User;
+import marinalucentini.laundryshowcase.entities.Owner;
 import marinalucentini.laundryshowcase.exceptions.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import java.util.Date;
 public class JwtTool {
     @Value("${jwt.secret}")
     private String secret;
-    public String createToken(User user){
+    public String createToken(Owner user){
         return Jwts.builder()
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 *7))

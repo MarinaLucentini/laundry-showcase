@@ -1,7 +1,7 @@
 package marinalucentini.laundryshowcase.services;
 
 
-import marinalucentini.laundryshowcase.entities.User;
+import marinalucentini.laundryshowcase.entities.Owner;
 import marinalucentini.laundryshowcase.exceptions.UnauthorizedException;
 import marinalucentini.laundryshowcase.payload.UserDTO;
 import marinalucentini.laundryshowcase.security.JwtTool;
@@ -19,7 +19,7 @@ public class AuthorizationService {
     private PasswordEncoder bcrypt;
     public String authenticateUserAndGenerateToken(UserDTO payload){
 
-        User user = userService.findByEmail(payload.email());
+        Owner user = userService.findByEmail(payload.email());
 
         if(bcrypt.matches(payload.password(), user.getPassword())){
 
