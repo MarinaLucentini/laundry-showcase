@@ -20,9 +20,9 @@ const AdminPanel = () => {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
-        const { token } = await response.json();
-        console.log("Token received:", token);
-        localStorage.setItem("token", token);
+        const authToken = await response.json();
+        console.log("Token received:", authToken);
+        localStorage.setItem("authToken", authToken);
         navigate("/admin/dashboard");
       } else {
         const { error } = await response.json();
