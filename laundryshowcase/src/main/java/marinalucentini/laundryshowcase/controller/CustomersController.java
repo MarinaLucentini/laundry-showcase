@@ -9,6 +9,7 @@ import marinalucentini.laundryshowcase.services.CustomersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -25,8 +26,15 @@ public class CustomersController {
 @GetMapping
 @PreAuthorize("hasAuthority('ADMIN')")
 @ResponseStatus(HttpStatus.OK)
-public Page<CustomersResponseWithLaundryServicesDTO> getAllCustomers (@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy){
-    return customersService.getAllCustomers(page, size, sortBy);
+public ResponseEntity<Page<CustomersResponseWithLaundryServicesDTO>>  getAllCustomers (@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy){
+    try {
+        Page<CustomersResponseWithLaundryServicesDTO> customers = customersService.getAllCustomers(page, size, sortBy);
+        return ResponseEntity.ok(customers);
+    } catch (Exception e) {
+        // Log l'errore
+        System.out.println("Errore nel metodo getAllCustomers"+ e);;
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
 }
     // 2) Get w id
     @GetMapping("/{customerId}")
