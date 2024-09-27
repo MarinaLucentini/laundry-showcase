@@ -1,26 +1,11 @@
 import React from "react";
-import {
-  List,
-  Datagrid,
-  TextField,
-  TextInput,
-  Edit,
-  Create,
-  SimpleForm,
-  ReferenceInput,
-  SelectInput,
-  useRefresh,
-  useNotify,
-  required,
-  minLength,
-} from "react-admin";
+import { List, Datagrid, TextField, TextInput, Edit, Create, SimpleForm, useRefresh, useNotify, required, minLength } from "react-admin";
 
 export const LaundryServiceList = (props) => (
   <List {...props}>
     <Datagrid rowClick="edit">
       <TextField source="id" />
       <TextField source="name" label="Service Name" />
-      <TextField source="customer.name" label="Associated Customer" />
     </Datagrid>
   </List>
 );
@@ -30,12 +15,12 @@ export const LaundryServiceCreate = (props) => {
   const refresh = useRefresh();
 
   const onSuccess = () => {
-    notify('Service created successfully!');
+    notify("Service created successfully!");
     refresh();
   };
 
   const onFailure = (error) => {
-    notify(`Error: ${error.message}`, 'warning');
+    notify(`Error: ${error.message}`, "warning");
   };
 
   return (
@@ -52,12 +37,12 @@ export const LaundryServiceEdit = (props) => {
   const refresh = useRefresh();
 
   const onSuccess = () => {
-    notify('Service updated successfully!');
+    notify("Service updated successfully!");
     refresh();
   };
 
   const onFailure = (error) => {
-    notify(`Error: ${error.message}`, 'warning');
+    notify(`Error: ${error.message}`, "warning");
   };
 
   return (
@@ -65,9 +50,6 @@ export const LaundryServiceEdit = (props) => {
       <SimpleForm>
         <TextInput disabled source="id" />
         <TextInput source="name" label="Service Name" validate={[required(), minLength(3)]} />
-        <ReferenceInput label="Associated Customer" source="customerId" reference="customers">
-          <SelectInput optionText="name" />
-        </ReferenceInput>
       </SimpleForm>
     </Edit>
   );

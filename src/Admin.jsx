@@ -14,6 +14,7 @@ const AdminPanel = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app";
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -58,32 +59,54 @@ const AdminPanel = () => {
       const { page, perPage } = params.pagination;
       const { field, order } = params.sort;
 
-      // Adeguare i parametri di ordinamento se necessario
       const query = {
         sort: JSON.stringify([field, order]),
-        page: page - 1, // Spring Data Page starts at 0
+        page: page - 1, // Adjust based on backend pagination (0-based indexing)
         size: perPage,
         filter: JSON.stringify(params.filter),
       };
 
-      const url = `${import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app"}/${resource}?${new URLSearchParams(query).toString()}`;
+      const url = `${API_URL}/${resource}?${new URLSearchParams(query).toString()}`;
+      console.log(`Fetching ${resource} from URL: ${url}`);
 
       return httpClient(url)
-        .then(({ json }) => ({
-          data: json.content, // Estrarre i dati dalla proprietà 'content'
-          total: json.totalElements, // Estrarre il totale dalla proprietà 'totalElements'
-        }))
+        .then(({ json }) => {
+          let data = json.content || json;
+
+          console.log(`${resource} data received:`, data);
+
+          return {
+            data: data,
+            total: json.totalElements || data.length,
+          };
+        })
         .catch((error) => Promise.reject(error));
     },
 
     getOne: (resource, params) =>
-      httpClient(`${import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app"}/${resource}/${params.id}`)
-        .then(({ json }) => ({ data: json }))
+      httpClient(`${API_URL}/${resource}/${params.id}`)
+        .then(({ json }) => ({
+          data: json,
+        }))
         .catch((error) => Promise.reject(error)),
+
+    getMany: (resource, params) => {
+      const query = {
+        filter: JSON.stringify({ id: params.ids }),
+      };
+      const url = `${API_URL}/${resource}?${new URLSearchParams(query).toString()}`;
+
+      return httpClient(url)
+        .then(({ json }) => ({
+          data: json.content || json, // Adjust based on backend response
+        }))
+        .catch((error) => Promise.reject(error));
+    },
+
     create: (resource, params) => {
-      const url = `${import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app"}/${resource}`;
-      console.log("Invio richiesta POST a:", url);
-      console.log("Dati inviati:", params.data);
+      const url = `${API_URL}/${resource}`;
+      console.log(`Creating ${resource} at URL: ${url}`);
+      console.log("Data sent:", params.data);
 
       return fetch(url, {
         method: "POST",
@@ -94,29 +117,30 @@ const AdminPanel = () => {
         body: JSON.stringify(params.data),
       })
         .then((response) => {
-          console.log("Status della risposta:", response.status);
+          console.log(`Create response status: ${response.status}`);
           if (!response.ok) {
             return response.json().then((error) => {
-              console.error("Errore dalla risposta del backend:", error);
+              console.error("Backend create error:", error);
               return Promise.reject(error);
             });
           }
           return response.json();
         })
         .then((data) => {
-          console.log("Dati ricevuti dal backend:", data);
+          console.log("Create response data:", data);
           if (!data.id) {
-            throw new Error("La risposta del backend non contiene il campo 'id'.");
+            throw new Error("Backend did not return an 'id' field.");
           }
           return { data };
         })
-        .catch((error) => {
-          console.error("Errore nel dataProvider.create:", error);
-          return Promise.reject(error);
-        });
+        .catch((error) => Promise.reject(error));
     },
+
     update: (resource, params) => {
-      const url = `${import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app"}/${resource}/${params.id}`;
+      const url = `${API_URL}/${resource}/${params.id}`;
+      console.log(`Updating ${resource} at URL: ${url}`);
+      console.log("Data sent:", params.data);
+
       return fetch(url, {
         method: "PATCH",
         headers: {
@@ -125,35 +149,43 @@ const AdminPanel = () => {
         },
         body: JSON.stringify(params.data),
       })
-        .then((response) => response.json())
+        .then((response) => {
+          console.log(`Update response status: ${response.status}`);
+          if (!response.ok) {
+            return response.json().then((error) => {
+              console.error("Backend update error:", error);
+              return Promise.reject(error);
+            });
+          }
+          return response.json();
+        })
         .then((data) => ({ data }))
         .catch((error) => Promise.reject(error));
     },
+
     delete: (resource, params) => {
-      const url = `${import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app"}/${resource}/${params.id}`;
+      const url = `${API_URL}/${resource}/${params.id}`;
+      console.log(`Deleting ${resource} at URL: ${url}`);
+
       return fetch(url, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
       })
-        .then(() => ({ data: params.id }))
+        .then((response) => {
+          if (!response.ok) {
+            return response.json().then((error) => Promise.reject(error));
+          }
+          return { data: params.id };
+        })
         .catch((error) => Promise.reject(error));
     },
-    getMany: (resource, params) => {
-      const query = {
-        filter: JSON.stringify({ id: params.ids }), // Adjust based on your backend's expected filter format
-      };
-      const url = `${import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app"}/${resource}?${new URLSearchParams(query)}`;
 
-      return httpClient(url)
-        .then(({ json }) => ({
-          data: json, // Adjust based on your backend's response structure
-        }))
-        .catch((error) => Promise.reject(error));
-    },
+    // Custom method for associating Customer and LaundryService
     associateCustomerWithService: (customerId, laundryServiceId) => {
-      const url = `${import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app"}/customers/${customerId}/${laundryServiceId}`;
+      const url = `${API_URL}/customers/${customerId}/${laundryServiceId}`;
+      console.log(`Associating Customer ${customerId} with Laundry Service ${laundryServiceId} at URL: ${url}`);
 
       return fetch(url, {
         method: "PATCH",
@@ -163,15 +195,21 @@ const AdminPanel = () => {
         },
       })
         .then((response) => {
+          console.log(`Association response status: ${response.status}`);
           if (!response.ok) {
-            return response.json().then((error) => Promise.reject(error));
+            return response.json().then((error) => {
+              console.error("Backend association error:", error);
+              return Promise.reject(error);
+            });
           }
           return response.json();
         })
-        .then((data) => ({ data }))
+        .then((data) => {
+          console.log("Association response data:", data);
+          return { data };
+        })
         .catch((error) => Promise.reject(error));
     },
-
     // other methods
   };
 
