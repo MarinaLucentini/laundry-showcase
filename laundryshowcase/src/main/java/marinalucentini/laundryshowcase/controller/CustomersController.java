@@ -25,7 +25,7 @@ public class CustomersController {
     // 1) Get
 @GetMapping
 @PreAuthorize("hasAuthority('ADMIN')")
-@ResponseStatus(HttpStatus.OK)
+
 public ResponseEntity<Page<CustomersResponseWithLaundryServicesDTO>>  getAllCustomers (@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy){
     try {
         Page<CustomersResponseWithLaundryServicesDTO> customers = customersService.getAllCustomers(page, size, sortBy);

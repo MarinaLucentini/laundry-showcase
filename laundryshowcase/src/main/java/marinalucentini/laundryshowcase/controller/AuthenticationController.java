@@ -30,7 +30,7 @@ public class AuthenticationController {
     @Autowired
     UserRepository userRepository;
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
+
     public ResponseEntity<Object> studentResponseDto  (@RequestBody @Validated UserDTO userDTO, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
