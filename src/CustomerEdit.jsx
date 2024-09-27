@@ -1,4 +1,4 @@
-import { Edit, email, SimpleForm, TextInput } from "react-admin";
+import { Edit, email, SimpleForm, TextInput, ReferenceInput, SelectInput } from "react-admin";
 
 const CustomerEdit = (props) => (
   <Edit {...props}>
@@ -7,6 +7,9 @@ const CustomerEdit = (props) => (
       <TextInput source="name" />
       <TextInput source="email" validate={[email()]} />
       <TextInput source="phone" />
+      <ReferenceInput label="Laundry Service" source="serviceId" reference="services">
+        <SelectInput optionText="serviceName" />
+      </ReferenceInput>
     </SimpleForm>
   </Edit>
 );

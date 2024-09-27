@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CustomerCreate from "./CustomerCreate";
 import CustomerEdit from "./CustomerEdit";
+import { LaundryServiceList, LaundryServiceCreate, LaundryServiceEdit } from './LaundryServices';
 
 const AdminPanel = () => {
   const [email, setEmail] = useState("");
@@ -124,10 +125,11 @@ const AdminPanel = () => {
         },
         body: JSON.stringify(params.data),
       })
-        .then((response) => response.json())
-        .then((data) => ({ data }))
-        .catch((error) => Promise.reject(error));
-    },
+      .then((response) => response.json())
+      .then((data) => ({ data }))
+      .catch((error) => Promise.reject(error));
+    }
+    ,
 
     delete: (resource, params) => {
       const url = `${import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app"}/${resource}/${params.id}`;
@@ -167,6 +169,7 @@ const AdminPanel = () => {
       ) : (
         <Admin basename="/admin" dataProvider={dataProvider} theme={AdminTheme}>
           <Resource name="customers" list={CustomerList} edit={CustomerEdit} create={CustomerCreate} />
+          <Resource name="services" list={LaundryServiceList} create={LaundryServiceCreate} edit={LaundryServiceEdit} />
         </Admin>
       )}
     </div>
