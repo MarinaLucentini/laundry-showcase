@@ -10,6 +10,7 @@ import marinalucentini.laundryshowcase.payload.customers.CustomersResponseDto;
 import marinalucentini.laundryshowcase.payload.customers.CustomersResponseWithLaundryServicesDTO;
 import marinalucentini.laundryshowcase.payload.customers.CustomersUpdateDto;
 import marinalucentini.laundryshowcase.repositories.CustomersRepository;
+import marinalucentini.laundryshowcase.repositories.LaundryServicesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +26,7 @@ public class CustomersService {
     @Autowired
     CustomersRepository customersRepository;
     @Autowired
-    LaundryServicesService laundryServicesService;
+    LaundryServicesRepository laundryServicesService;
     // create
     public CustomersResponseWithLaundryServicesDTO saveCustomers (CustomersDto body){
         Customers customers = new Customers(body.name(), body.email(), body.phone());
