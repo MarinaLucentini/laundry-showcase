@@ -4,7 +4,7 @@ import { fetchUtils } from "react-admin";
 import { CustomerList, CustomerEdit, CustomerCreate } from "./Customers";
 import { AdminTheme } from "./AdminTheme";
 import { useNavigate } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css'; 
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const AdminPanel = () => {
   const [email, setEmail] = useState("");
@@ -53,9 +53,9 @@ const AdminPanel = () => {
   const dataProvider = {
     getList: (resource, params) => {
       const { page, perPage } = params.pagination;
-      const { field, order } = params.sort;
+      const { field } = params.sort;
       const query = {
-        sort: JSON.stringify([field, order]),
+        sort: JSON.stringify([field]),
         range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
         filter: JSON.stringify(params.filter),
       };
@@ -80,30 +80,20 @@ const AdminPanel = () => {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       {!localStorage.getItem("authToken") ? (
-        <div className="card p-4" style={{ width: '400px' }}>
+        <div className="card p-4" style={{ width: "400px" }}>
           <h3 className="text-center mb-4">Accesso Amministratore</h3>
           <form onSubmit={handleLogin}>
             <div className="mb-3">
               <label className="form-label">Email:</label>
-              <input
-                type="email"
-                className="form-control"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
             <div className="mb-3">
               <label className="form-label">Password:</label>
-              <input
-                type="password"
-                className="form-control"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} required />
             </div>
-            <button type="submit" className="btn btn-primary w-100">Login</button>
+            <button type="submit" className="btn btn-primary w-100">
+              Login
+            </button>
           </form>
           {error && <p className="text-danger mt-2">{error}</p>}
         </div>
