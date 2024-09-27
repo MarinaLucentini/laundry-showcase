@@ -23,7 +23,7 @@ const AdminPanel = () => {
       if (response.ok) {
         const authToken = await response.json();
         console.log("Token received:", authToken);
-        localStorage.setItem("authToken", authToken);
+        localStorage.setItem("authToken", authToken.accessToken);
         navigate("/admin/customers");
       } else {
         const { error } = await response.json();
