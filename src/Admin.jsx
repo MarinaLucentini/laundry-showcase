@@ -110,7 +110,7 @@ const AdminPanel = () => {
         });
     },
 
-    // other methods (create, update, delete)
+    // other methods (update, delete)
   };
 
   return (
