@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Admin, Resource } from "react-admin";
 import { fetchUtils } from "react-admin";
-import { CustomerList, CustomerEdit } from "./Customers";
+import { CustomerList } from "./Customers";
 import { AdminTheme } from "./AdminTheme";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CustomerCreate from "./CustomerCreate";
+import CustomerEdit from "./CustomerEdit";
 
 const AdminPanel = () => {
   const [email, setEmail] = useState("");
@@ -112,6 +113,32 @@ const AdminPanel = () => {
           console.error("Errore nel dataProvider.create:", error);
           return Promise.reject(error);
         });
+    },
+    update: (resource, params) => {
+      const url = `${import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app"}/${resource}/${params.id}`;
+      return fetch(url, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+        body: JSON.stringify(params.data),
+      })
+        .then((response) => response.json())
+        .then((data) => ({ data }))
+        .catch((error) => Promise.reject(error));
+    },
+
+    delete: (resource, params) => {
+      const url = `${import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app"}/${resource}/${params.id}`;
+      return fetch(url, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      })
+        .then(() => ({ data: params.id }))
+        .catch((error) => Promise.reject(error));
     },
 
     // other methods (update, delete)

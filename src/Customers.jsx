@@ -1,5 +1,5 @@
 import React from "react";
-import { List, Datagrid, TextField, EmailField, Edit, SimpleForm, TextInput, Create } from "react-admin";
+import { List, Datagrid, TextField, EmailField } from "react-admin";
 
 export const CustomerList = (props) => (
   <List {...props}>
@@ -12,16 +12,16 @@ export const CustomerList = (props) => (
   </List>
 );
 
-export const CustomerEdit = (props) => (
-  <Edit {...props}>
-    <SimpleForm>
-      <TextInput disabled source="id" />
-      <TextInput source="name" />
-      <TextInput source="email" />
-      <TextInput source="phone" />
-    </SimpleForm>
-  </Edit>
-);
+// export const CustomerEdit = (props) => (
+//   <Edit {...props}>
+//     <SimpleForm>
+//       <TextInput disabled source="id" />
+//       <TextInput source="name" />
+//       <TextInput source="email" />
+//       <TextInput source="phone" />
+//     </SimpleForm>
+//   </Edit>
+// );
 
 // export const CustomerCreate = (props) => (
 //   <Create {...props}>
