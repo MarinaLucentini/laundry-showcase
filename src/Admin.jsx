@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Admin, Resource } from "react-admin";
 import { fetchUtils } from "react-admin";
-import { CustomerList, CustomerEdit, CustomerCreate } from "./Customers";
+import { CustomerList, CustomerEdit } from "./Customers";
 import { AdminTheme } from "./AdminTheme";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import CustomerCreate from "./CustomerCreate";
 
 const AdminPanel = () => {
   const [email, setEmail] = useState("");
@@ -73,6 +74,41 @@ const AdminPanel = () => {
       httpClient(`${import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app"}/${resource}/${params.id}`)
         .then(({ json }) => ({ data: json }))
         .catch((error) => Promise.reject(error)),
+    create: (resource, params) => {
+      const url = `${import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app"}/${resource}`;
+      console.log("Invio richiesta POST a:", url);
+      console.log("Dati inviati:", params.data);
+
+      return fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+        body: JSON.stringify(params.data),
+      })
+        .then((response) => {
+          console.log("Status della risposta:", response.status);
+          if (!response.ok) {
+            return response.json().then((error) => {
+              console.error("Errore dalla risposta del backend:", error);
+              return Promise.reject(error);
+            });
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Dati ricevuti dal backend:", data);
+          if (!data.id) {
+            throw new Error("La risposta del backend non contiene il campo 'id'.");
+          }
+          return { data };
+        })
+        .catch((error) => {
+          console.error("Errore nel dataProvider.create:", error);
+          return Promise.reject(error);
+        });
+    },
 
     // other methods (create, update, delete)
   };

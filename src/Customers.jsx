@@ -1,14 +1,5 @@
-import React from 'react';
-import { 
-  List, 
-  Datagrid, 
-  TextField, 
-  EmailField, 
-  Edit, 
-  SimpleForm, 
-  TextInput, 
-  Create 
-} from 'react-admin';
+import React from "react";
+import { List, Datagrid, TextField, EmailField, Edit, SimpleForm, TextInput, Create } from "react-admin";
 
 export const CustomerList = (props) => (
   <List {...props}>
@@ -32,12 +23,12 @@ export const CustomerEdit = (props) => (
   </Edit>
 );
 
-export const CustomerCreate = (props) => (
-  <Create {...props}>
-    <SimpleForm>
-      <TextInput source="name" />
-      <TextInput source="email" />
-      <TextInput source="phone" />
-    </SimpleForm>
-  </Create>
-);
+// export const CustomerCreate = (props) => (
+//   <Create {...props}>
+//     <SimpleForm>
+//       <TextInput source="name" />
+//       <TextInput source="email" />
+//       <TextInput source="phone" />
+//     </SimpleForm>
+//   </Create>
+// );
