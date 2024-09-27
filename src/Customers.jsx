@@ -1,5 +1,5 @@
 import React from "react";
-import { List, Datagrid, TextField, EmailField } from "react-admin";
+import { List, Datagrid, TextField, EmailField, ArrayField, SingleFieldList } from "react-admin";
 
 export const CustomerList = (props) => (
   <List {...props}>
@@ -8,10 +8,14 @@ export const CustomerList = (props) => (
       <TextField source="name" />
       <EmailField source="email" />
       <TextField source="phone" />
+      <ArrayField source="laundryServiceResponseListDTOList">
+        <SingleFieldList>
+          <TextField source="name" />
+        </SingleFieldList>
+      </ArrayField>
     </Datagrid>
   </List>
 );
-
 // export const CustomerEdit = (props) => (
 //   <Edit {...props}>
 //     <SimpleForm>
