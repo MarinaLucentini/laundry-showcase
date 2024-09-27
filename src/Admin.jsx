@@ -54,20 +54,24 @@ const AdminPanel = () => {
   const dataProvider = {
     getList: (resource, params) => {
       const { page, perPage } = params.pagination;
-      const { field } = params.sort;
+      const { field, order } = params.sort;
+
+      // Adeguare i parametri di ordinamento se necessario
       const query = {
-        sort: JSON.stringify([field]),
-        range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+        sort: JSON.stringify([field, order]),
+        page: page - 1, // Spring Data Page starts at 0
+        size: perPage,
         filter: JSON.stringify(params.filter),
       };
+
       const url = `${import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app"}/${resource}?${new URLSearchParams(query).toString()}`;
 
       return httpClient(url)
-        .then(({ headers, json }) => ({
-          data: json,
-          total: parseInt(headers.get("content-range").split("/").pop(), 10),
+        .then(({ json }) => ({
+          data: json.content, // Estrarre i dati dalla proprietà 'content'
+          total: json.totalElements, // Estrarre il totale dalla proprietà 'totalElements'
         }))
-        .catch((error) => Promise.reject(error)); // Proper error handling
+        .catch((error) => Promise.reject(error));
     },
 
     getOne: (resource, params) =>
