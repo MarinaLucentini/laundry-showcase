@@ -2,6 +2,7 @@
 body {
   background-color: #0a4d84;
 }
+
 h1,
 h2,
 h3,
@@ -10,3 +11,18 @@ h5,
 h6 {
   color: #2b78b4;
 }
+
+.card {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.text-danger {
+  color: #dc3545;
+}
+
+.btn{
+  background-color: #0a4d84 !important;
+  color: white;
+}
+
