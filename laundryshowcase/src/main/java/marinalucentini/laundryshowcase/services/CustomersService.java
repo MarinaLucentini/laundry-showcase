@@ -25,10 +25,8 @@ public class CustomersService {
     CustomersRepository customersRepository;
     // create
     public String saveCustomers (CustomersDto body){
-        Customers customers = new Customers();
-        customers.setEmail(body.email());
-        customers.setName(body.name());
-        customers.setPhone(body.phone());
+        Customers customers = new Customers(body.name(), body.email(), body.phone());
+       
         customersRepository.save(customers);
         return "Il cliente è stato salvato correttamente";
     }

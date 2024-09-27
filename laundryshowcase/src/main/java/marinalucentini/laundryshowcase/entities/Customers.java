@@ -27,4 +27,9 @@ private String phone;
 @OneToMany (mappedBy = "customers")
     private List<LaundryServices> laundryServices = new ArrayList<>();
 
+    public Customers(String name, String email, String phone) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
 }
