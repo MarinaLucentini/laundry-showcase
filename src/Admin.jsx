@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CustomerCreate from "./CustomerCreate";
 import CustomerEdit from "./CustomerEdit";
-import { LaundryServiceList, LaundryServiceCreate, LaundryServiceEdit } from './LaundryServices';
+import { LaundryServiceList, LaundryServiceCreate, LaundryServiceEdit } from "./LaundryServices";
 
 const AdminPanel = () => {
   const [email, setEmail] = useState("");
@@ -125,12 +125,10 @@ const AdminPanel = () => {
         },
         body: JSON.stringify(params.data),
       })
-      .then((response) => response.json())
-      .then((data) => ({ data }))
-      .catch((error) => Promise.reject(error));
-    }
-    ,
-
+        .then((response) => response.json())
+        .then((data) => ({ data }))
+        .catch((error) => Promise.reject(error));
+    },
     delete: (resource, params) => {
       const url = `${import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app"}/${resource}/${params.id}`;
       return fetch(url, {
@@ -140,6 +138,37 @@ const AdminPanel = () => {
         },
       })
         .then(() => ({ data: params.id }))
+        .catch((error) => Promise.reject(error));
+    },
+    getMany: (resource, params) => {
+      const query = {
+        filter: JSON.stringify({ id: params.ids }), // Adjust based on your backend's expected filter format
+      };
+      const url = `${import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app"}/${resource}?${new URLSearchParams(query)}`;
+
+      return httpClient(url)
+        .then(({ json }) => ({
+          data: json, // Adjust based on your backend's response structure
+        }))
+        .catch((error) => Promise.reject(error));
+    },
+    associateCustomerWithService: (customerId, laundryServiceId) => {
+      const url = `${import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app"}/customers/${customerId}/${laundryServiceId}`;
+
+      return fetch(url, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            return response.json().then((error) => Promise.reject(error));
+          }
+          return response.json();
+        })
+        .then((data) => ({ data }))
         .catch((error) => Promise.reject(error));
     },
 
