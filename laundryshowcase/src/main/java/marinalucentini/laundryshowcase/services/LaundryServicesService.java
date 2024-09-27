@@ -41,8 +41,11 @@ return new LaundryServiceResponseListDTO(laundryServices.getName(), laundryServi
 // delete laundry service
     public LaundryServiceResponseDto deleteLaundryService (UUID id){
     LaundryServices laundryServices = findById(id);
+    if(laundryServices.getCustomers() != null){
+
     Customers customers = customersService.findById( laundryServices.getCustomers().getId());
     customers.getLaundryServices().remove(laundryServices);
+    }
 
     laundryServicesRepository.delete(laundryServices);
     return new LaundryServiceResponseDto("Il servizio è stato correttamente elimintato");
