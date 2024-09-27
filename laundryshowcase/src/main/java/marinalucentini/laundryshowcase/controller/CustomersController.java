@@ -57,11 +57,11 @@ return customersService.saveCustomers(body);
     @PatchMapping ("/{customerId}")
     @PreAuthorize("hasAuthority('ADMIN')")
 @ResponseStatus(HttpStatus.OK)
-    public CustomersResponseDto patchCustomers(@RequestBody @Validated CustomersUpdateDto body, @PathVariable UUID customerId, BindingResult bindingResult){
+    public CustomersResponseWithLaundryServicesDTO patchCustomers(@RequestBody @Validated CustomersUpdateDto body, @PathVariable UUID customerId, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             throw new BadRequestException(bindingResult.getAllErrors());
         }
-        return new CustomersResponseDto(customersService.updateCustomers(body, customerId));
+        return customersService.updateCustomers(body, customerId);
     }
 
     // 5) delete

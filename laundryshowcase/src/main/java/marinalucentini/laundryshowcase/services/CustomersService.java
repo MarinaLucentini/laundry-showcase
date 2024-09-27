@@ -31,7 +31,7 @@ public class CustomersService {
         return new CustomersResponseWithLaundryServicesDTO(customers.getId(), customers.getName(), customers.getEmail(), customers.getPhone(), customers.getLaundryServices().stream().map(laundryServices -> new LaundryServiceResponseListDTO(laundryServices.getName(), laundryServices.isCompleted(), laundryServices.getId())).toList());
     }
 // update
-    public String updateCustomers (CustomersUpdateDto body, UUID id){
+    public CustomersResponseWithLaundryServicesDTO updateCustomers (CustomersUpdateDto body, UUID id){
         Customers customers = findById(id);
         if(body.name() != null){
             customers.setName(body.name());
@@ -43,7 +43,8 @@ public class CustomersService {
             customers.setPhone(body.phone());
         }
         customersRepository.save(customers);
-        return "Il cliente è stato correttamente modificato";
+        return new CustomersResponseWithLaundryServicesDTO(customers.getId(), customers.getName(), customers.getEmail(), customers.getPhone(), customers.getLaundryServices().stream().map(laundryServices -> new LaundryServiceResponseListDTO(laundryServices.getName(), laundryServices.isCompleted(), laundryServices.getId())).toList());
+
     }
 
     // delete
