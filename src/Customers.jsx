@@ -8,7 +8,6 @@ export const CustomerList = (props) => (
       <TextField source="name" />
       <EmailField source="email" />
       <TextField source="phone" />
-      <TextField source="laundryservice.name" label="Associated Laundry Service" />
     </Datagrid>
   </List>
 );

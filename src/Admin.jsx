@@ -184,7 +184,7 @@ const AdminPanel = () => {
 
     // Custom method for associating Customer and LaundryService
     associateCustomerWithService: (customerId, laundryServiceId) => {
-      const url = `${API_URL}/customers/${customerId}/${laundryServiceId}`;
+      const url = `${API_URL}/services/${customerId}/${laundryServiceId}`;
       console.log(`Associating Customer ${customerId} with Laundry Service ${laundryServiceId} at URL: ${url}`);
 
       return fetch(url, {
