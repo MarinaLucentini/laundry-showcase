@@ -141,7 +141,7 @@ const AdminPanel = () => {
         .catch((error) => Promise.reject(error));
     },
 
-    // other methods (update, delete)
+    // other methods
   };
 
   return (
