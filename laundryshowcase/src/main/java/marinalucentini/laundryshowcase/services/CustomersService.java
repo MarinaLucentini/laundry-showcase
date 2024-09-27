@@ -24,11 +24,11 @@ public class CustomersService {
     @Autowired
     CustomersRepository customersRepository;
     // create
-    public String saveCustomers (CustomersDto body){
+    public CustomersResponseWithLaundryServicesDTO saveCustomers (CustomersDto body){
         Customers customers = new Customers(body.name(), body.email(), body.phone());
        
         customersRepository.save(customers);
-        return "Il cliente è stato salvato correttamente";
+        return new CustomersResponseWithLaundryServicesDTO(customers.getId(), customers.getName(), customers.getEmail(), customers.getPhone(), customers.getLaundryServices().stream().map(laundryServices -> new LaundryServiceResponseListDTO(laundryServices.getName(), laundryServices.isCompleted(), laundryServices.getId())).toList());
     }
 // update
     public String updateCustomers (CustomersUpdateDto body, UUID id){

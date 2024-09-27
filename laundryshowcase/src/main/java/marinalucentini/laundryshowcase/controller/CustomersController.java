@@ -47,11 +47,11 @@ public ResponseEntity<Page<CustomersResponseWithLaundryServicesDTO>>  getAllCust
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-public CustomersResponseDto saveCustomers (@RequestBody @Validated CustomersDto body, BindingResult bindingResult){
+public CustomersResponseWithLaundryServicesDTO saveCustomers (@RequestBody @Validated CustomersDto body, BindingResult bindingResult){
 if(bindingResult.hasErrors()){
     throw new BadRequestException(bindingResult.getAllErrors());
 }
-return new CustomersResponseDto(customersService.saveCustomers(body));
+return customersService.saveCustomers(body);
     }
     // 4) Patch
     @PatchMapping ("/{customerId}")
