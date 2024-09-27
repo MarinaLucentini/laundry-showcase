@@ -7,6 +7,7 @@ import marinalucentini.laundryshowcase.exceptions.NotFoundException;
 import marinalucentini.laundryshowcase.payload.LaundryService.LaundryServiceDTO;
 import marinalucentini.laundryshowcase.payload.LaundryService.LaundryServiceResponseDto;
 import marinalucentini.laundryshowcase.payload.LaundryService.LaundryServiceResponseListDTO;
+import marinalucentini.laundryshowcase.payload.customers.CustomersResponseWithLaundryServicesDTO;
 import marinalucentini.laundryshowcase.repositories.CustomersRepository;
 import marinalucentini.laundryshowcase.repositories.LaundryServicesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class LaundryServicesService {
     @Autowired
     CustomersRepository customersRepository;
     // create laundry service
-public LaundryServiceResponseDto saveLaundryService (LaundryServiceDTO body){
+public LaundryServiceResponseListDTO saveLaundryService (LaundryServiceDTO body){
 laundryServicesRepository.findByName(body.name()).ifPresent(laundryServices -> {
     throw new BadRequestException("Il servizio è già stato creato");
 });
@@ -35,7 +36,7 @@ LaundryServices laundryServices = new LaundryServices();
 laundryServices.setName(body.name());
 laundryServices.setCompleted(false);
 laundryServicesRepository.save(laundryServices);
-return new LaundryServiceResponseDto("Il servizio è stato aggiunto con successo");
+return new LaundryServiceResponseListDTO(laundryServices.getName(), laundryServices.isCompleted(), laundryServices.getId());
 }
 // delete laundry service
     public LaundryServiceResponseDto deleteLaundryService (UUID id){
@@ -61,14 +62,14 @@ return new LaundryServiceResponseDto("Il servizio è stato aggiunto con successo
         return laundryServicesPage.map(laundryServices -> new LaundryServiceResponseListDTO(laundryServices.getName(), laundryServices.isCompleted(), laundryServices.getId()));
     }
     // update name laundry service
-    public LaundryServiceResponseDto updateNameLaundryService (UUID id, LaundryServiceDTO body){
+    public LaundryServiceResponseListDTO updateNameLaundryService (UUID id, LaundryServiceDTO body){
     LaundryServices laundryServices = findById(id);
     laundryServices.setName(body.name());
     laundryServicesRepository.save(laundryServices);
-    return new LaundryServiceResponseDto("Il servizio" + body.name() + " è stato modificato con successo");
+    return new LaundryServiceResponseListDTO(laundryServices.getName(), laundryServices.isCompleted(), laundryServices.getId());
     }
     // associate customer and laundry service
-    public LaundryServiceResponseDto associateLaundryServiceAndCustomer (UUID customerId, UUID laundryServiceId){
+    public CustomersResponseWithLaundryServicesDTO associateLaundryServiceAndCustomer (UUID customerId, UUID laundryServiceId){
     LaundryServices laundryServices = findById(laundryServiceId);
         Customers customers = customersService.findById(customerId);
         if (customers.getLaundryServices().contains(laundryServices)) {
@@ -77,7 +78,7 @@ return new LaundryServiceResponseDto("Il servizio è stato aggiunto con successo
         customers.getLaundryServices().add(laundryServices);
         laundryServices.setCustomers(customers);
         laundryServicesRepository.save(laundryServices);
-        return new LaundryServiceResponseDto("Il cliente" + customers.getName() + " è stato correttamente associato al servizio " + laundryServices.getName());
+        return new CustomersResponseWithLaundryServicesDTO(customers.getId(), customers.getName(), customers.getEmail(), customers.getPhone(), customers.getLaundryServices().stream().map(laundryService -> new LaundryServiceResponseListDTO(laundryService.getName(), laundryService.isCompleted(), laundryService.getId())).toList());
     }
     // complete laundry service and send notification
     public LaundryServiceResponseDto completeLaundryServiceAndSendNotification (UUID id){

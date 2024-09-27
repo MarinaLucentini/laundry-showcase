@@ -4,6 +4,7 @@ import marinalucentini.laundryshowcase.exceptions.BadRequestException;
 import marinalucentini.laundryshowcase.payload.LaundryService.LaundryServiceDTO;
 import marinalucentini.laundryshowcase.payload.LaundryService.LaundryServiceResponseDto;
 import marinalucentini.laundryshowcase.payload.LaundryService.LaundryServiceResponseListDTO;
+import marinalucentini.laundryshowcase.payload.customers.CustomersResponseWithLaundryServicesDTO;
 import marinalucentini.laundryshowcase.services.LaundryServicesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public class LaundryServiceController {
 @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
 @ResponseStatus(HttpStatus.CREATED)
-    public LaundryServiceResponseDto createLaundryService (@RequestBody @Validated LaundryServiceDTO body, BindingResult bindingResult){
+    public LaundryServiceResponseListDTO createLaundryService (@RequestBody @Validated LaundryServiceDTO body, BindingResult bindingResult){
     if(bindingResult.hasErrors()){
         throw new BadRequestException(bindingResult.getAllErrors());
     }
@@ -46,7 +47,7 @@ public LaundryServiceResponseListDTO getLaundryServiceById (@PathVariable UUID l
     // 4) Patch
 @PatchMapping("/{laundryServiceId}")
 @PreAuthorize("hasAuthority('ADMIN')")
-public LaundryServiceResponseDto updateLaundryService (@RequestBody @Validated LaundryServiceDTO body, BindingResult bindingResult, @PathVariable UUID laundryServiceId){
+public LaundryServiceResponseListDTO updateLaundryService (@RequestBody @Validated LaundryServiceDTO body, BindingResult bindingResult, @PathVariable UUID laundryServiceId){
         if(bindingResult.hasErrors()){
             throw new BadRequestException(bindingResult.getAllErrors());
         }
@@ -67,7 +68,7 @@ return laundryServicesService.completeLaundryServiceAndSendNotification(laundryS
     // 7) associate customers at laundry service
 @PatchMapping("/{customerId}/{laundryServiceId}")
 @PreAuthorize("hasAuthority('ADMIN')")
-public LaundryServiceResponseDto associateCustomerAndLaundryService(@PathVariable UUID laundryServiceId, @PathVariable UUID customerId){
+public CustomersResponseWithLaundryServicesDTO associateCustomerAndLaundryService(@PathVariable UUID laundryServiceId, @PathVariable UUID customerId){
 return laundryServicesService.associateLaundryServiceAndCustomer(customerId, laundryServiceId);
 }
 }
