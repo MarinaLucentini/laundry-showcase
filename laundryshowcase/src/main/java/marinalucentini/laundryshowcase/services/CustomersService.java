@@ -2,6 +2,7 @@ package marinalucentini.laundryshowcase.services;
 
 import marinalucentini.laundryshowcase.entities.Customers;
 
+import marinalucentini.laundryshowcase.entities.LaundryServices;
 import marinalucentini.laundryshowcase.exceptions.NotFoundException;
 import marinalucentini.laundryshowcase.payload.LaundryService.LaundryServiceResponseListDTO;
 import marinalucentini.laundryshowcase.payload.customers.CustomersDto;
@@ -23,6 +24,8 @@ import java.util.UUID;
 public class CustomersService {
     @Autowired
     CustomersRepository customersRepository;
+    @Autowired
+    LaundryServicesService laundryServicesService;
     // create
     public CustomersResponseWithLaundryServicesDTO saveCustomers (CustomersDto body){
         Customers customers = new Customers(body.name(), body.email(), body.phone());
@@ -51,6 +54,18 @@ public class CustomersService {
 
     public String deleteCustomers (UUID id){
         Customers customers = findById(id);
+        if (!customers.getLaundryServices().isEmpty()) {
+            // Itera su ciascun servizio di lavanderia associato e rimuovi l'associazione
+            for (LaundryServices laundryService : customers.getLaundryServices()) {
+                laundryService.setCustomers(null);  // Rimuovi l'associazione impostando il cliente a null
+                laundryServicesService.save(laundryService);  // Salva l'aggiornamento del servizio di lavanderia
+            }
+
+            // Svuota la lista dei servizi di lavanderia del cliente
+            customers.getLaundryServices().clear();
+        }
+
+        // Ora elimina il cliente
         customersRepository.delete(customers);
         return "Il cliente è stato correttamente eliminato";
     }

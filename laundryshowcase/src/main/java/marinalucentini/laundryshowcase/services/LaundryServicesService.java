@@ -38,6 +38,11 @@ laundryServices.setCompleted(false);
 laundryServicesRepository.save(laundryServices);
 return new LaundryServiceResponseListDTO(laundryServices.getName(), laundryServices.isCompleted(), laundryServices.getId());
 }
+// save laundry service
+    public LaundryServiceResponseListDTO save (LaundryServices laundryServices){
+    laundryServicesRepository.save(laundryServices);
+    return new LaundryServiceResponseListDTO(laundryServices.getName(), laundryServices.isCompleted(), laundryServices.getId());
+    }
 // delete laundry service
     public LaundryServiceResponseDto deleteLaundryService (UUID id){
     LaundryServices laundryServices = findById(id);
