@@ -12,10 +12,13 @@ import {
   Toolbar,
   SaveButton,
   useEditContext,
+  useRecordContext,
+  DeleteButton,
 } from "react-admin";
 import { useFormContext, useWatch } from "react-hook-form";
+
 const CustomToolbar = () => {
-  const { record } = useEditContext(); // Access the current record
+  const record = useRecordContext(); // Access the current record
   const { setValue } = useFormContext();
   const notify = useNotify();
   const refresh = useRefresh();
@@ -50,7 +53,13 @@ const CustomToolbar = () => {
 
   return (
     <Toolbar>
+      {/* Save Button */}
       <SaveButton />
+
+      {/* Delete Button */}
+      <DeleteButton />
+
+      {/* Associate Laundry Service Button */}
       <Box ml={2}>
         <Button variant="contained" color="secondary" onClick={handleAssociate} disabled={!serviceId}>
           Associate Laundry Service
