@@ -5,7 +5,7 @@ export const LaundryServiceList = (props) => (
   <List {...props}>
     <Datagrid rowClick="edit">
       <TextField source="id" />
-      <TextField source="serviceName" label="Service Name" />
+      <TextField source="name" label="Service Name" />
     </Datagrid>
   </List>
 );
@@ -13,7 +13,7 @@ export const LaundryServiceList = (props) => (
 export const LaundryServiceCreate = (props) => (
   <Create {...props}>
     <SimpleForm>
-      <TextInput source="serviceName" label="Service Name" />
+      <TextInput source="name" label="Service Name" />
     </SimpleForm>
   </Create>
 );
@@ -22,7 +22,7 @@ export const LaundryServiceEdit = (props) => (
   <Edit {...props}>
     <SimpleForm>
       <TextInput disabled source="id" />
-      <TextInput source="serviceName" label="Service Name" />
+      <TextInput source="name" label="Service Name" />
     </SimpleForm>
   </Edit>
 );
