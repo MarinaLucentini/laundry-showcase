@@ -51,12 +51,27 @@ export const CustomerList = (props) => {
 
   return (
     <List {...props}>
-      <Datagrid rowClick="edit">
-        <TextField source="id" />
+      <Datagrid
+        rowClick="edit"
+        sx={{
+          "& .RaDatagrid-headerCell": {
+            display: { xs: "none", sm: "none", md: "table-cell" }, // Intestazioni delle colonne
+          },
+          "& .RaDatagrid-cell": {
+            display: { xs: "none", sm: "none", md: "table-cell" }, // Celle del corpo della tabella
+          },
+        }}
+      >
+        <TextField source="id" sx={{ display: { xs: "none", sm: "none", md: "table-cell" } }} />
         <TextField source="name" />
-        <EmailField source="email" />
-        <TextField source="phone" />
-        <ArrayField source="laundryServiceResponseListDTOList">
+        <EmailField
+          source="email"
+          sx={{
+            display: { xs: "none", sm: "none", md: "table-cell" },
+          }}
+        />
+        <TextField source="phone" sx={{ display: { xs: "none", sm: "none", md: "table-cell" } }} />
+        <ArrayField source="laundryServiceResponseListDTOList" sx={{ display: { xs: "none", sm: "none", md: "table-cell" } }}>
           <SingleFieldList>
             <TextField source="name" />
           </SingleFieldList>

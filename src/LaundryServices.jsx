@@ -3,8 +3,18 @@ import { List, Datagrid, TextField, TextInput, Edit, Create, SimpleForm, useRefr
 
 export const LaundryServiceList = (props) => (
   <List {...props}>
-    <Datagrid rowClick="edit">
-      <TextField source="id" />
+    <Datagrid
+      rowClick="edit"
+      sx={{
+        "& .RaDatagrid-headerCell": {
+          display: { xs: "none", sm: "none", md: "table-cell" }, // Intestazioni delle colonne
+        },
+        "& .RaDatagrid-cell": {
+          display: { xs: "none", sm: "none", md: "table-cell" }, // Celle del corpo della tabella
+        },
+      }}
+    >
+      <TextField source="id" sx={{ display: { xs: "none", sm: "none", md: "table-cell" } }} />
       <TextField source="name" label="Service Name" />
     </Datagrid>
   </List>
