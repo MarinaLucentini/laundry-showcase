@@ -20,7 +20,7 @@ const MyNav = () => {
   return (
     <Navbar expand="sm" className={styles.navBar}>
       <Container>
-        <Navbar.Brand href="#home" className="d-flex align-items-center">
+        <Navbar.Brand className="d-flex align-items-center">
           <FaWhatsapp size={34} className={`${styles.iconColor} ${styles.whatsappIcon} me-3`} onClick={handleWhatsAppClick} />
           <CiFacebook size={34} className={styles.iconColor} onClick={handleFacebookClich} />
         </Navbar.Brand>
