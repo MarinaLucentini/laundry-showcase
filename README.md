@@ -1,6 +1,6 @@
 # React + Vite
 🧼 Arte del Pulito 🧺
-Descrizione
+
 Arte del Pulito è un'applicazione web per una lavanderia moderna, che offre un'interfaccia per i clienti e un pannello di amministrazione per la gestione dei servizi. L'app semplifica la comunicazione con i clienti e migliora l'efficienza del business! 🚀
 🌐 Sito Web
 https://artedelpulito.vercel.app/
