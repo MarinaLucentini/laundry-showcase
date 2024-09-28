@@ -214,9 +214,9 @@ const AdminPanel = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
+    <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light">
       {!localStorage.getItem("authToken") ? (
-        <div className="card p-4" style={{ width: "400px" }}>
+        <div className="card shadow-sm p-4" style={{ width: "100%", maxWidth: "300px" }}>
           <h3 className="text-center mb-4">Accesso Amministratore</h3>
           <form onSubmit={handleLogin}>
             <div className="mb-3">

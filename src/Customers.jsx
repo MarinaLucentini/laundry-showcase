@@ -1,7 +1,30 @@
-import { Button } from "@mui/material";
-import PropTypes from "prop-types";
 import React from "react";
-import { List, Datagrid, TextField, EmailField, ArrayField, SingleFieldList, useDataProvider, useRecordContext } from "react-admin";
+import PropTypes from "prop-types";
+import { List, Datagrid, TextField, EmailField, ArrayField, SingleFieldList, useDataProvider, useRefresh, useRecordContext } from "react-admin";
+import { Button, Box } from "@mui/material";
+import { styled } from "@mui/system";
+
+// Styled components for responsive design
+const StyledDatagrid = styled(Datagrid)(({ theme }) => ({
+  [theme.breakpoints.down("sm")]: {
+    "& .RaDatagrid-headerCell": {
+      display: "none",
+    },
+    "& .RaDatagrid-row": {
+      "& > td": {
+        display: "block",
+        width: "100%",
+        textAlign: "right",
+        "&:before": {
+          content: "attr(data-label)",
+          float: "left",
+          fontWeight: "bold",
+        },
+      },
+    },
+  },
+}));
+
 const CompleteServiceButton = ({ onDelete }) => {
   const record = useRecordContext(); // Access record from context
 
@@ -15,7 +38,17 @@ const CompleteServiceButton = ({ onDelete }) => {
   };
 
   return (
-    <Button onClick={handleClick} variant="contained" color="primary">
+    <Button
+      onClick={handleClick}
+      variant="contained"
+      color="primary"
+      size="medium"
+      sx={{
+        padding: "10px 16px",
+        fontSize: "16px",
+        margin: "4px",
+      }}
+    >
       Servizio completato
     </Button>
   );
@@ -28,6 +61,7 @@ CompleteServiceButton.propTypes = {
 
 export const CustomerList = (props) => {
   const dataProvider = useDataProvider(); // Access the dataProvider
+  const refresh = useRefresh(); // Get refresh function
 
   // Handle WhatsApp click and send a message
   const handleWhatsAppClick = (phoneNumber) => {
@@ -43,6 +77,7 @@ export const CustomerList = (props) => {
       .then(() => {
         // After successful deletion, send the WhatsApp message
         handleWhatsAppClick(phoneNumber);
+        refresh(); // Refresh the list to reflect the deletion
       })
       .catch((error) => {
         console.error("Error deleting customer:", error);
@@ -51,37 +86,24 @@ export const CustomerList = (props) => {
 
   return (
     <List {...props}>
-      <Datagrid
-        rowClick="edit"
-        sx={{
-          "& .RaDatagrid-headerCell": {
-            display: { xs: "none", sm: "none", md: "table-cell" }, // Intestazioni delle colonne
-          },
-          "& .RaDatagrid-cell": {
-            display: { xs: "none", sm: "none", md: "table-cell" }, // Celle del corpo della tabella
-          },
-        }}
-      >
-        <TextField source="id" sx={{ display: { xs: "none", sm: "none", md: "table-cell" } }} />
-        <TextField source="name" />
-        <EmailField
-          source="email"
-          sx={{
-            display: { xs: "none", sm: "none", md: "table-cell" },
-          }}
-        />
-        <TextField source="phone" sx={{ display: { xs: "none", sm: "none", md: "table-cell" } }} />
-        <ArrayField source="laundryServiceResponseListDTOList" sx={{ display: { xs: "none", sm: "none", md: "table-cell" } }}>
-          <SingleFieldList>
-            <TextField source="name" />
-          </SingleFieldList>
-        </ArrayField>
-        {/* Render the custom button inside the Datagrid */}
-        <CompleteServiceButton onDelete={handleDeleteClick} />
-      </Datagrid>
+      <Box sx={{ overflowX: "0" }}>
+        <StyledDatagrid rowClick="edit">
+          <TextField source="id" />
+          <TextField source="name" />
+          <EmailField source="email" />
+          <TextField source="phone" />
+          <ArrayField source="laundryServiceResponseListDTOList">
+            <SingleFieldList>
+              <TextField source="name" />
+            </SingleFieldList>
+          </ArrayField>
+          <CompleteServiceButton onDelete={handleDeleteClick} />
+        </StyledDatagrid>
+      </Box>
     </List>
   );
 };
+
 // export const CustomerEdit = (props) => (
 //   <Edit {...props}>
 //     <SimpleForm>

@@ -3,18 +3,8 @@ import { List, Datagrid, TextField, TextInput, Edit, Create, SimpleForm, useRefr
 
 export const LaundryServiceList = (props) => (
   <List {...props}>
-    <Datagrid
-      rowClick="edit"
-      sx={{
-        "& .RaDatagrid-headerCell": {
-          display: { xs: "none", sm: "none", md: "table-cell" }, // Intestazioni delle colonne
-        },
-        "& .RaDatagrid-cell": {
-          display: { xs: "none", sm: "none", md: "table-cell" }, // Celle del corpo della tabella
-        },
-      }}
-    >
-      <TextField source="id" sx={{ display: { xs: "none", sm: "none", md: "table-cell" } }} />
+    <Datagrid rowClick="edit">
+      <TextField source="id" />
       <TextField source="name" label="Service Name" />
     </Datagrid>
   </List>
@@ -64,3 +54,33 @@ export const LaundryServiceEdit = (props) => {
     </Edit>
   );
 };
+
+// Adding styles for responsive design
+const styles = `
+  .laundry-service-list {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .laundry-service-list {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .laundry-service-list .MuiCard-root {
+      flex: 1 1 45%;
+      margin: 10px;
+    }
+  }
+
+  .MuiCard-root {
+    margin-bottom: 16px;
+  }
+`;
+
+const styleElement = document.createElement("style");
+styleElement.innerHTML = styles;
+document.head.appendChild(styleElement);
