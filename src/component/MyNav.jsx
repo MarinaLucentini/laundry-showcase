@@ -6,8 +6,9 @@ import styles from "./MyNav.module.css";
 const MyNav = () => {
   const handleWhatsAppClick = () => {
     const phoneNumber = "3911220571";
+    const countryCode = "39";
     const message = "Salve, vorrei informazioni sui vostri servizi di lavanderia.";
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${countryCode}${phoneNumber}?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappUrl, "_blank");
   };

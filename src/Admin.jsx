@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Admin, Resource } from "react-admin";
 import { fetchUtils } from "react-admin";
 import { CustomerList } from "./Customers";
@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import CustomerCreate from "./CustomerCreate";
 import CustomerEdit from "./CustomerEdit";
 import { LaundryServiceList, LaundryServiceCreate, LaundryServiceEdit } from "./LaundryServices";
+import CustomLayout from "./CustomLayout";
 
 const AdminPanel = () => {
   const [email, setEmail] = useState("");
@@ -15,11 +16,52 @@ const AdminPanel = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app";
+  const getAuthToken = () => {
+    const token = localStorage.getItem("authToken");
+    const expiry = localStorage.getItem("tokenExpiry");
+
+    if (token && expiry) {
+      const now = new Date().getTime();
+      if (now < parseInt(expiry, 10)) {
+        return token;
+      } else {
+        // Token scaduto
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("tokenExpiry");
+        return null;
+      }
+    }
+    return null;
+  };
+  // Verifica la scadenza del token all'avvio
+  useEffect(() => {
+    const checkTokenExpiry = () => {
+      const token = getAuthToken();
+      const expiry = localStorage.getItem("tokenExpiry");
+
+      if (token && expiry) {
+        const now = new Date().getTime();
+        if (now > parseInt(expiry, 10)) {
+          // Token scaduto
+          localStorage.removeItem("authToken");
+          localStorage.removeItem("tokenExpiry");
+          navigate("/"); // Reindirizza alla pagina di login
+        }
+      }
+    };
+
+    checkTokenExpiry();
+
+    // Imposta un intervallo per verificare periodicamente
+    const interval = setInterval(checkTokenExpiry, 60 * 1000); // ogni minuto
+
+    return () => clearInterval(interval);
+  }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://safe-wallis-hackaton-12ea70e1.koyeb.app/auth/login", {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -27,7 +69,17 @@ const AdminPanel = () => {
       if (response.ok) {
         const authToken = await response.json();
         console.log("Token received:", authToken);
+        const expiryTime = new Date().getTime() + 24 * 60 * 60 * 1000; // 1 giorno in millisecondi
         localStorage.setItem("authToken", authToken.accessToken);
+        localStorage.setItem("tokenExpiry", expiryTime);
+
+        // Imposta un timeout per rimuovere il token dopo un giorno
+        setTimeout(() => {
+          localStorage.removeItem("authToken");
+          localStorage.removeItem("tokenExpiry");
+          navigate("/"); // Reindirizza alla pagina di login
+        }, 24 * 60 * 60 * 1000); // 1 giorno in millisecondi
+
         navigate("/admin/customers");
       } else {
         const { error } = await response.json();
@@ -38,11 +90,16 @@ const AdminPanel = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("tokenExpiry");
+    navigate("/"); // Reindirizza alla pagina di login
+  };
   const httpClient = (url, options = {}) => {
-    const token = localStorage.getItem("authToken");
+    const token = getAuthToken();
 
     if (!token) {
-      console.error("Token not found");
+      console.error("Token not found or expired");
       throw new Error("Not authenticated");
     }
 
@@ -53,7 +110,6 @@ const AdminPanel = () => {
 
     return fetchUtils.fetchJson(url, options);
   };
-
   const dataProvider = {
     getList: (resource, params) => {
       const { page, perPage } = params.pagination;
@@ -215,7 +271,7 @@ const AdminPanel = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light">
-      {!localStorage.getItem("authToken") ? (
+      {!localStorage.getItem("authToken") || !localStorage.getItem("tokenExpiry") ? (
         <div className="card shadow-sm p-4" style={{ width: "100%", maxWidth: "300px" }}>
           <h3 className="text-center mb-4">Accesso Amministratore</h3>
           <form onSubmit={handleLogin}>
@@ -234,7 +290,12 @@ const AdminPanel = () => {
           {error && <p className="text-danger mt-2">{error}</p>}
         </div>
       ) : (
-        <Admin basename="/admin" dataProvider={dataProvider} theme={AdminTheme}>
+        <Admin
+          basename="/admin"
+          dataProvider={dataProvider}
+          theme={AdminTheme}
+          layout={(layoutProps) => <CustomLayout {...layoutProps} handleLogout={handleLogout} />}
+        >
           <Resource name="customers" list={CustomerList} edit={CustomerEdit} create={CustomerCreate} />
           <Resource name="services" list={LaundryServiceList} create={LaundryServiceCreate} edit={LaundryServiceEdit} />
         </Admin>

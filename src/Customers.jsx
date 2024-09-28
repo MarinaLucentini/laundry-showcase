@@ -66,7 +66,8 @@ export const CustomerList = (props) => {
   // Handle WhatsApp click and send a message
   const handleWhatsAppClick = (phoneNumber) => {
     const message = "Il capo è pronto, vieni a ritirarlo.";
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    const countryCode = "39";
+    const whatsappUrl = `https://wa.me/${countryCode}${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
   };
 
