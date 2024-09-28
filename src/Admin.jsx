@@ -1,105 +1,24 @@
-import React, { useEffect, useState } from "react";
+// AdminPanel.js
+import React from "react";
 import { Admin, Resource } from "react-admin";
 import { fetchUtils } from "react-admin";
 import { CustomerList } from "./Customers";
 import { AdminTheme } from "./AdminTheme";
-import { useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
 import CustomerCreate from "./CustomerCreate";
 import CustomerEdit from "./CustomerEdit";
 import { LaundryServiceList, LaundryServiceCreate, LaundryServiceEdit } from "./LaundryServices";
 import CustomLayout from "./CustomLayout";
 
+import LoginPage from "./LoginPage"; // Importa la Custom Login Page
+import authProvider from "./AuthProvider";
+
 const AdminPanel = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL || "https://safe-wallis-hackaton-12ea70e1.koyeb.app";
-  const getAuthToken = () => {
-    const token = localStorage.getItem("authToken");
-    const expiry = localStorage.getItem("tokenExpiry");
 
-    if (token && expiry) {
-      const now = new Date().getTime();
-      if (now < parseInt(expiry, 10)) {
-        return token;
-      } else {
-        // Token scaduto
-        localStorage.removeItem("authToken");
-        localStorage.removeItem("tokenExpiry");
-        return null;
-      }
-    }
-    return null;
-  };
-  // Verifica la scadenza del token all'avvio
-  useEffect(() => {
-    const checkTokenExpiry = () => {
-      const token = getAuthToken();
-      const expiry = localStorage.getItem("tokenExpiry");
-
-      if (token && expiry) {
-        const now = new Date().getTime();
-        if (now > parseInt(expiry, 10)) {
-          // Token scaduto
-          localStorage.removeItem("authToken");
-          localStorage.removeItem("tokenExpiry");
-          navigate("/"); // Reindirizza alla pagina di login
-        }
-      }
-    };
-
-    checkTokenExpiry();
-
-    // Imposta un intervallo per verificare periodicamente
-    const interval = setInterval(checkTokenExpiry, 60 * 1000); // ogni minuto
-
-    return () => clearInterval(interval);
-  }, [navigate]);
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      if (response.ok) {
-        const authToken = await response.json();
-        console.log("Token received:", authToken);
-        const expiryTime = new Date().getTime() + 24 * 60 * 60 * 1000; // 1 giorno in millisecondi
-        localStorage.setItem("authToken", authToken.accessToken);
-        localStorage.setItem("tokenExpiry", expiryTime);
-
-        // Imposta un timeout per rimuovere il token dopo un giorno
-        setTimeout(() => {
-          localStorage.removeItem("authToken");
-          localStorage.removeItem("tokenExpiry");
-          navigate("/"); // Reindirizza alla pagina di login
-        }, 24 * 60 * 60 * 1000); // 1 giorno in millisecondi
-
-        navigate("/admin/customers");
-      } else {
-        const { error } = await response.json();
-        setError(error || "Invalid login credentials");
-      }
-    } catch (err) {
-      setError("An error occurred. Please try again.");
-    }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("tokenExpiry");
-    navigate("/"); // Reindirizza alla pagina di login
-  };
   const httpClient = (url, options = {}) => {
-    const token = getAuthToken();
+    const token = localStorage.getItem("authToken");
 
     if (!token) {
-      console.error("Token not found or expired");
       throw new Error("Not authenticated");
     }
 
@@ -110,6 +29,7 @@ const AdminPanel = () => {
 
     return fetchUtils.fetchJson(url, options);
   };
+
   const dataProvider = {
     getList: (resource, params) => {
       const { page, perPage } = params.pagination;
@@ -138,14 +58,12 @@ const AdminPanel = () => {
         })
         .catch((error) => Promise.reject(error));
     },
-
     getOne: (resource, params) =>
       httpClient(`${API_URL}/${resource}/${params.id}`)
         .then(({ json }) => ({
           data: json,
         }))
         .catch((error) => Promise.reject(error)),
-
     getMany: (resource, params) => {
       const query = {
         filter: JSON.stringify({ id: params.ids }),
@@ -158,7 +76,6 @@ const AdminPanel = () => {
         }))
         .catch((error) => Promise.reject(error));
     },
-
     create: (resource, params) => {
       const url = `${API_URL}/${resource}`;
       console.log(`Creating ${resource} at URL: ${url}`);
@@ -191,7 +108,6 @@ const AdminPanel = () => {
         })
         .catch((error) => Promise.reject(error));
     },
-
     update: (resource, params) => {
       const url = `${API_URL}/${resource}/${params.id}`;
       console.log(`Updating ${resource} at URL: ${url}`);
@@ -218,7 +134,6 @@ const AdminPanel = () => {
         .then((data) => ({ data }))
         .catch((error) => Promise.reject(error));
     },
-
     delete: (resource, params) => {
       const url = `${API_URL}/${resource}/${params.id}`;
       console.log(`Deleting ${resource} at URL: ${url}`);
@@ -237,7 +152,6 @@ const AdminPanel = () => {
         })
         .catch((error) => Promise.reject(error));
     },
-
     // Custom method for associating Customer and LaundryService
     associateCustomerWithService: (customerId, laundryServiceId) => {
       const url = `${API_URL}/services/${customerId}/${laundryServiceId}`;
@@ -253,10 +167,7 @@ const AdminPanel = () => {
         .then((response) => {
           console.log(`Association response status: ${response.status}`);
           if (!response.ok) {
-            return response.json().then((error) => {
-              console.error("Backend association error:", error);
-              return Promise.reject(error);
-            });
+            return response.json().then((error) => Promise.reject(error));
           }
           return response.json();
         })
@@ -266,41 +177,14 @@ const AdminPanel = () => {
         })
         .catch((error) => Promise.reject(error));
     },
-    // other methods
+    // altri metodi
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light">
-      {!localStorage.getItem("authToken") || !localStorage.getItem("tokenExpiry") ? (
-        <div className="card shadow-sm p-4" style={{ width: "100%", maxWidth: "300px" }}>
-          <h3 className="text-center mb-4">Accesso Amministratore</h3>
-          <form onSubmit={handleLogin}>
-            <div className="mb-3">
-              <label className="form-label">Email:</label>
-              <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            </div>
-            <div className="mb-3">
-              <label className="form-label">Password:</label>
-              <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            </div>
-            <button type="submit" className="btn btn-primary w-100">
-              Login
-            </button>
-          </form>
-          {error && <p className="text-danger mt-2">{error}</p>}
-        </div>
-      ) : (
-        <Admin
-          basename="/admin"
-          dataProvider={dataProvider}
-          theme={AdminTheme}
-          layout={(layoutProps) => <CustomLayout {...layoutProps} handleLogout={handleLogout} />}
-        >
-          <Resource name="customers" list={CustomerList} edit={CustomerEdit} create={CustomerCreate} />
-          <Resource name="services" list={LaundryServiceList} create={LaundryServiceCreate} edit={LaundryServiceEdit} />
-        </Admin>
-      )}
-    </div>
+    <Admin basename="/admin" dataProvider={dataProvider} authProvider={authProvider} theme={AdminTheme} layout={CustomLayout} loginPage={LoginPage}>
+      <Resource name="customers" list={CustomerList} edit={CustomerEdit} create={CustomerCreate} />
+      <Resource name="services" list={LaundryServiceList} create={LaundryServiceCreate} edit={LaundryServiceEdit} />
+    </Admin>
   );
 };
 

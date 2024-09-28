@@ -12,13 +12,17 @@ const MyNav = () => {
 
     window.open(whatsappUrl, "_blank");
   };
-
+  const handleFacebookClich = () => {
+    const facebookUrl =
+      "https://www.facebook.com/people/Arte-del-pulito/61566530990584/?rdid=GgE5P444OviS27qy&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2FpizJZ3zzNjBZh1qB%2F";
+    window.open(facebookUrl, "_blank");
+  };
   return (
     <Navbar expand="sm" className={styles.navBar}>
       <Container>
         <Navbar.Brand href="#home" className="d-flex align-items-center">
           <FaWhatsapp size={34} className={`${styles.iconColor} ${styles.whatsappIcon} me-3`} onClick={handleWhatsAppClick} />
-          <CiFacebook size={34} className={styles.iconColor} />
+          <CiFacebook size={34} className={styles.iconColor} onClick={handleFacebookClich} />
         </Navbar.Brand>
       </Container>
     </Navbar>
