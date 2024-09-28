@@ -1,8 +1,82 @@
 # React + Vite
+🧼 Arte del Pulito 🧺
+Descrizione
+Arte del Pulito è un'applicazione web per una lavanderia moderna, che offre un'interfaccia per i clienti e un pannello di amministrazione per la gestione dei servizi. L'app semplifica la comunicazione con i clienti e migliora l'efficienza del business! 🚀
+🌐 Sito Web
+https://artedelpulito.vercel.app/
+Caratteristiche principali
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🏠 Home page vetrina per i clienti
+👨‍💼 Pannello di amministrazione
+🧵 Gestione dei servizi di lavanderia
+📱 Notifiche ai clienti quando i capi sono pronti
+🗺️ Integrazione con Google Maps
+💬 Collegamento diretto a WhatsApp per informazioni
+📘 Integrazione con la pagina Facebook del negozio
 
-Currently, two official plugins are available:
+Struttura dell'applicazione
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Interfaccia Cliente (Home Page)
+
+Vetrina dei servizi offerti
+Mappa Google per localizzare la lavanderia
+Link alla pagina Facebook
+Pulsante per contatto WhatsApp
+
+
+Pannello di Amministrazione
+
+Gestione dei servizi offerti
+Sistema di notifica ai clienti
+
+
+
+Tecnologie utilizzate
+
+🖥️ Frontend:
+
+🛠️ Sviluppato con Vite
+⚛️ React
+🎨 CSS per lo styling
+🚀 Deployato su Vercel
+
+
+🔧 Backend:
+
+☕ Java Spring Boot
+🚀 Deployato su Koyeb
+
+
+
+Social Media e Contatti
+
+📘 Pagina Facebook
+💚 WhatsApp: Accessibile dal sito web
+
+Come utilizzare
+
+Per i clienti:
+
+Visita https://artedelpulito.vercel.app/
+Esplora i servizi offerti
+Usa la mappa per trovare la lavanderia
+Contatta il negozio via WhatsApp per informazioni
+
+
+Per gli amministratori:
+
+Accedi al pannello di amministrazione 
+Gestisci i servizi offerti
+Invia notifiche ai clienti quando i capi sono pronti
+
+
+
+Sviluppo futuro
+Siamo sempre alla ricerca di miglioramenti! 🌟 Alcune idee per il futuro:
+
+Sistema di prenotazione online
+Tracciamento dei capi in tempo reale
+App mobile per i clienti
+
+
+⭐️ Arte del Pulito - La tua lavanderia di fiducia! ⭐️
