@@ -2,9 +2,13 @@
 🧼 Arte del Pulito 🧺
 
 Arte del Pulito è un'applicazione web per una lavanderia moderna, che offre un'interfaccia per i clienti e un pannello di amministrazione per la gestione dei servizi. L'app semplifica la comunicazione con i clienti e migliora l'efficienza del business! 🚀
+
 🌐 Sito Web
+
 https://artedelpulito.vercel.app/
+
 Caratteristiche principali
+
 
 🏠 Home page vetrina per i clienti
 👨‍💼 Pannello di amministrazione
@@ -14,9 +18,12 @@ Caratteristiche principali
 💬 Collegamento diretto a WhatsApp per informazioni
 📘 Integrazione con la pagina Facebook del negozio
 
+
 Struttura dell'applicazione
 
+
 Interfaccia Cliente (Home Page)
+
 
 Vetrina dei servizi offerti
 Mappa Google per localizzare la lavanderia
@@ -26,12 +33,14 @@ Pulsante per contatto WhatsApp
 
 Pannello di Amministrazione
 
+
 Gestione dei servizi offerti
 Sistema di notifica ai clienti
 
 
 
 Tecnologie utilizzate
+
 
 🖥️ Frontend:
 
